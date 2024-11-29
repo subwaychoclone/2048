@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2048 Shop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #faf8ef;
+      margin: 0;
+      padding: 0;
+    }
+    .item {
+      margin: 20px;
+      padding: 15px;
+      background-color: #8f7a66;
+      color: white;
+      border-radius: 5px;
+      display: inline-block;
+      cursor: pointer;
+    }
+    .item:hover {
+      background-color: #9c876a;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shop</h1>
+  <p>You have <span id="coin-count">0</span> coins.</p>
+  <div class="item" onclick="buyItem('Bomb', 5)">Buy Bomb (5 coins)</div>
+  <div class="item" onclick="buyItem('Undo', 10)">Buy Undo (10 coins)</div>
+  <a href="index.html" class="item">Return to Main Menu</a>
+  <script>
+    let coins = 0;
+
+    // 코인 업데이트
+    function updateCoins() {
+      document.getElementById('coin-count').textContent = coins;
+    }
+
+    // 아이템 구매
+    function buyItem(name, cost) {
+      if (coins >= cost) {
+        coins -= cost;
+        alert(`${name} purchased!`);
+        updateCoins();
+      } else {
+        alert('Not enough coins!');
+      }
+    }
+
+    updateCoins();
+  </script>
+</body>
+</html>
