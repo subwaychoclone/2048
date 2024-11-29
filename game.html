@@ -4,10 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2048 Game</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="game_styles.css">
 </head>
 <body>
-  <h1>2048 Game</h1>
+  <div class="game-header">
+    <h1>2048 Game</h1>
+    <div class="score-container">
+      <div class="score">Score: <span id="score">0</span></div>
+      <div class="coins">Coins: <span id="coins">0</span></div>
+    </div>
+  </div>
   <div id="game-container">
     <div id="grid"></div>
     <div id="items">
@@ -15,6 +21,6 @@
     </div>
   </div>
   <p id="message"></p>
-  <script src="script.js"></script>
+  <script src="game_script.js"></script>
 </body>
 </html>
