@@ -1,7 +1,7 @@
-/* body 스타일 */
+/* 전체 화면 */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f2f2f2;
+  background-color: #faf8ef;
   color: #776e65;
   margin: 0;
   display: flex;
@@ -11,7 +11,7 @@ body {
   flex-direction: column;
 }
 
-/* 게임 헤더 */
+/* 헤더 스타일 */
 .game-header {
   text-align: center;
   margin-bottom: 20px;
@@ -24,60 +24,48 @@ h1 {
 }
 
 .score-container {
-  display: flex;
-  justify-content: space-between;
   margin-top: 10px;
-}
-
-.score, .coins {
-  background-color: #bbada0;
-  color: white;
-  padding: 10px 20px;
   font-size: 18px;
-  border-radius: 5px;
 }
 
 /* 게임 컨테이너 */
 #game-container {
   background-color: #bbada0;
-  padding: 15px;
+  padding: 10px;
   border-radius: 10px;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
   width: 420px;
   height: 420px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  position: relative;
 }
 
-/* 타일 간격 문제 해결 */
+/* 그리드 스타일 */
 #grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4개의 동일한 크기의 칸 */
-  gap: 10px; /* 일정한 간격 추가 */
-  width: 420px;
-  height: 420px;
-  padding: 10px; /* 내부 여백 추가 */
-  background-color: #bbada0;
-  border-radius: 10px;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+  grid-template-columns: repeat(4, 1fr); /* 정사각형 비율 */
+  gap: 10px;
+  width: 100%;
+  height: 100%;
 }
 
-/* 타일 크기 고정 */
+/* 타일 스타일 */
 .tile {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
+  background-color: #cdc1b4;
+  font-size: 28px;
+  font-weight: bold;
+  color: #776e65;
+  text-align: center;
+  line-height: 100%; /* 타일 내부 숫자 정렬 */
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 28px;
-  font-weight: bold;
-  border-radius: 5px;
-  background-color: #cdc1b4; /* 기본 색 */
   transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
 }
-
 
 .tile[data-value="2"] { background-color: #eee4da; color: #776e65; }
 .tile[data-value="4"] { background-color: #ede0c8; color: #776e65; }
@@ -95,7 +83,6 @@ h1 {
   display: none;
 }
 
-/* 게임 오버 메시지 */
 #message {
   margin-top: 20px;
   font-size: 18px;
