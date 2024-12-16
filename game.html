@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="game_styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1 class="title">2048 Game</h1>
-        <div class="score-container">
-            <div>Score: <span id="score">0</span></div>
-            <button id="restart">Restart</button>
-        </div>
-        <div class="game-board" id="game-board">
-            <!-- Tiles will be dynamically generated here -->
-        </div>
+    <div class="game-container">
+        <header>
+            <h1>2048</h1>
+            <div class="score-container">
+                <div>Score: <span id="score">0</span></div>
+            </div>
+        </header>
+        <div id="game-board"></div>
+        <button id="restart-button">Restart</button>
     </div>
     <script src="game_script.js"></script>
 </body>
