@@ -1,9 +1,10 @@
 const gameBoard = document.getElementById("game-board");
 const scoreElement = document.getElementById("score");
-const restartButton = document.getElementById("restart-button");
+const coinsElement = document.getElementById("coins");
 
 let board = [];
 let score = 0;
+let coins = 0;
 
 function initializeBoard() {
     board = Array.from({ length: 4 }, () => Array(4).fill(0));
@@ -34,12 +35,14 @@ function updateBoard() {
             tile.className = "tile";
             if (value > 0) {
                 tile.setAttribute("data-value", value);
-                tile.innerHTML = `<span>${value}</span>`;
+                tile.textContent = value;
             }
             gameBoard.appendChild(tile);
         }
     }
     scoreElement.textContent = score;
+    coinsElement.textContent = coins;
+    checkGameOver();
 }
 
 function slide(row) {
@@ -47,8 +50,10 @@ function slide(row) {
     const newRow = [];
     while (nonZero.length > 0) {
         if (nonZero.length > 1 && nonZero[0] === nonZero[1]) {
-            newRow.push(nonZero.shift() * 2);
-            score += newRow[newRow.length - 1];
+            const newValue = nonZero.shift() * 2;
+            newRow.push(newValue);
+            score += newValue;
+            coins += Math.floor(newValue / 4); // Coins based on tile value
             nonZero.shift();
         } else {
             newRow.push(nonZero.shift());
@@ -91,6 +96,18 @@ function move(direction) {
     }
 }
 
+function checkGameOver() {
+    for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+            if (board[r][c] === 0) return false;
+            if (c < 3 && board[r][c] === board[r][c + 1]) return false;
+            if (r < 3 && board[r][c] === board[r + 1][c]) return false;
+        }
+    }
+    setTimeout(() => alert("Game Over!"), 200);
+    return true;
+}
+
 function handleInput(event) {
     switch (event.key) {
         case "ArrowUp":
@@ -108,11 +125,5 @@ function handleInput(event) {
     }
 }
 
-restartButton.addEventListener("click", () => {
-    score = 0;
-    initializeBoard();
-});
-
 window.addEventListener("keydown", handleInput);
-
 initializeBoard();
