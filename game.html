@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2048 Game</title>
-  <link rel="stylesheet" href="game_styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 Game</title>
+    <link rel="stylesheet" href="game_styles.css">
 </head>
 <body>
-  <div class="game-header">
-    <h1>2048 Game</h1>
-    <div class="score-container">
-      <div class="score">Score: <span id="score">0</span></div>
+    <div class="container">
+        <h1 class="title">2048 Game</h1>
+        <div class="score-container">
+            <div>Score: <span id="score">0</span></div>
+            <button id="restart">Restart</button>
+        </div>
+        <div class="game-board" id="game-board">
+            <!-- Tiles will be dynamically generated here -->
+        </div>
     </div>
-  </div>
-  <div id="game-container">
-    <div id="grid"></div>
-    <p id="message" class="hidden">Game Over! Reload to play again.</p>
-  </div>
-  <script src="game_script.js"></script>
+    <script src="game_script.js"></script>
 </body>
 </html>
