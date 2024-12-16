@@ -1,111 +1,118 @@
-// 게임 설정
-const size = 4;
-let tiles = Array(size * size).fill(0);
+const gameBoard = document.getElementById("game-board");
+const scoreElement = document.getElementById("score");
+const restartButton = document.getElementById("restart-button");
+
+let board = [];
 let score = 0;
 
-// 초기화 함수
-function initGame() {
-  const grid = document.getElementById('grid');
-  grid.innerHTML = '';
-  tiles = Array(size * size).fill(0);
-  for (let i = 0; i < tiles.length; i++) {
-    const tile = document.createElement('div');
-    tile.classList.add('tile');
-    grid.appendChild(tile);
-  }
-  spawnTile();
-  spawnTile();
-  updateGrid();
+function initializeBoard() {
+    board = Array.from({ length: 4 }, () => Array(4).fill(0));
+    addRandomTile();
+    addRandomTile();
+    updateBoard();
 }
 
-// 숫자 추가
-function spawnTile() {
-  const emptyTiles = tiles.map((v, i) => (v === 0 ? i : null)).filter((i) => i !== null);
-  if (emptyTiles.length > 0) {
-    const randomIndex = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
-    tiles[randomIndex] = 2;
-  }
-}
-
-// 타일 업데이트
-function updateGrid() {
-  const tileElements = document.querySelectorAll('.tile');
-  tiles.forEach((value, index) => {
-    const tile = tileElements[index];
-    tile.textContent = value > 0 ? value : '';
-    tile.dataset.value = value;
-  });
-}
-
-// 이동 처리
-function slideRow(row) {
-  const nonZero = row.filter((num) => num !== 0);
-  for (let i = 0; i < nonZero.length - 1; i++) {
-    if (nonZero[i] === nonZero[i + 1]) {
-      nonZero[i] *= 2;
-      score += nonZero[i];
-      nonZero[i + 1] = 0;
+function addRandomTile() {
+    const emptyTiles = [];
+    for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+            if (board[r][c] === 0) emptyTiles.push([r, c]);
+        }
     }
-  }
-  return nonZero.filter((num) => num !== 0).concat(Array(size - nonZero.length).fill(0));
+    if (emptyTiles.length > 0) {
+        const [row, col] = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+        board[row][col] = Math.random() < 0.9 ? 2 : 4;
+    }
+}
+
+function updateBoard() {
+    gameBoard.innerHTML = "";
+    for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+            const value = board[r][c];
+            const tile = document.createElement("div");
+            tile.className = "tile";
+            if (value > 0) {
+                tile.setAttribute("data-value", value);
+                tile.innerHTML = `<span>${value}</span>`;
+            }
+            gameBoard.appendChild(tile);
+        }
+    }
+    scoreElement.textContent = score;
+}
+
+function slide(row) {
+    const nonZero = row.filter(value => value !== 0);
+    const newRow = [];
+    while (nonZero.length > 0) {
+        if (nonZero.length > 1 && nonZero[0] === nonZero[1]) {
+            newRow.push(nonZero.shift() * 2);
+            score += newRow[newRow.length - 1];
+            nonZero.shift();
+        } else {
+            newRow.push(nonZero.shift());
+        }
+    }
+    while (newRow.length < 4) newRow.push(0);
+    return newRow;
+}
+
+function rotateBoard() {
+    const newBoard = Array.from({ length: 4 }, () => Array(4).fill(0));
+    for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+            newBoard[c][3 - r] = board[r][c];
+        }
+    }
+    board = newBoard;
 }
 
 function move(direction) {
-  let moved = false;
+    let rotated = 0;
+    if (direction === "up") rotated = 1;
+    else if (direction === "right") rotated = 2;
+    else if (direction === "down") rotated = 3;
 
-  for (let i = 0; i < size; i++) {
-    let row = [];
-    if (direction === 'left' || direction === 'right') {
-      row = tiles.slice(i * size, i * size + size);
-      if (direction === 'right') row.reverse();
-    } else {
-      row = tiles.filter((_, index) => index % size === i);
-      if (direction === 'down') row.reverse();
+    for (let i = 0; i < rotated; i++) rotateBoard();
+    let moved = false;
+
+    for (let r = 0; r < 4; r++) {
+        const newRow = slide(board[r]);
+        if (newRow.toString() !== board[r].toString()) moved = true;
+        board[r] = newRow;
     }
 
-    const newRow = slideRow(row);
-    if (direction === 'right' || direction === 'down') newRow.reverse();
+    for (let i = 0; i < (4 - rotated) % 4; i++) rotateBoard();
 
-    for (let j = 0; j < size; j++) {
-      const index = direction === 'left' || direction === 'right' ? i * size + j : j * size + i;
-      if (tiles[index] !== newRow[j]) moved = true;
-      tiles[index] = newRow[j];
+    if (moved) {
+        addRandomTile();
+        updateBoard();
     }
-  }
-
-  if (moved) {
-    spawnTile();
-    updateGrid();
-    checkGameOver();
-  }
 }
 
-// 게임 오버 확인
-function checkGameOver() {
-  if (tiles.includes(0)) return false;
-  for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size - 1; j++) {
-      if (tiles[i * size + j] === tiles[i * size + j + 1] || tiles[j * size + i] === tiles[(j + 1) * size + i]) {
-        return false;
-      }
+function handleInput(event) {
+    switch (event.key) {
+        case "ArrowUp":
+            move("up");
+            break;
+        case "ArrowDown":
+            move("down");
+            break;
+        case "ArrowLeft":
+            move("left");
+            break;
+        case "ArrowRight":
+            move("right");
+            break;
     }
-  }
-  document.getElementById('message').classList.remove('hidden');
-  return true;
 }
 
-// 키 입력 처리
-window.addEventListener('keydown', (e) => {
-  const directions = {
-    ArrowLeft: 'left',
-    ArrowRight: 'right',
-    ArrowUp: 'up',
-    ArrowDown: 'down',
-  };
-  if (directions[e.key]) {
-    move(directions[e.key]);
-  }
+restartButton.addEventListener("click", () => {
+    score = 0;
+    initializeBoard();
 });
 
-// 초기화 실행
-initGame();
+window.addEventListener("keydown", handleInput);
+
+initializeBoard();
