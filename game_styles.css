@@ -1,61 +1,53 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #faf8ef;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
 }
 
-.container {
-    text-align: center;
-    width: 400px;
+#game-container {
     position: relative;
+    width: 400px;
 }
 
-.menu-button {
-    position: fixed;
-    top: 0;
-    left: 0;
+#menu-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
     background-color: #8f7a66;
-    color: white;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 0 0 5px 0;
-    font-size: 0.9rem;
-    font-weight: bold;
-    z-index: 10;
-}
-
-.menu-button:hover {
-    background-color: #9c8b78;
-}
-
-.title {
-    font-size: 2rem;
-    color: #776e65;
-    margin-bottom: 10px;
-}
-
-.score-container {
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-    color: #776e65;
+    justify-content: center;
+    border-radius: 5px;
+    text-decoration: none;
 }
 
-.game-board {
+#menu-button:hover {
+    background-color: #7b6b5f;
+}
+
+#menu-button::before {
+    content: '\2190'; /* Unicode for left arrow */
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+#game-board {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     background-color: #bbada0;
     padding: 10px;
     border-radius: 10px;
-    width: 100%;
-    aspect-ratio: 1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .tile {
@@ -65,33 +57,84 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 24px;
     font-weight: bold;
-    border-radius: 10px;
     color: #776e65;
-    transition: all 0.2s;
+    border-radius: 10px;
 }
 
-.tile-2 { background-color: #eee4da; border-radius: 10px; }
-.tile-4 { background-color: #ede0c8; border-radius: 10px; }
-.tile-8 { background-color: #f2b179; color: #f9f6f2; border-radius: 10px; }
-.tile-16 { background-color: #f59563; color: #f9f6f2; border-radius: 10px; }
-.tile-32 { background-color: #f67c5f; color: #f9f6f2; border-radius: 10px; }
-.tile-64 { background-color: #f65e3b; color: #f9f6f2; border-radius: 10px; }
-.tile-128 { background-color: #edcf72; color: #f9f6f2; border-radius: 10px; }
-.tile-256 { background-color: #edcc61; color: #f9f6f2; border-radius: 10px; }
-.tile-512 { background-color: #edc850; color: #f9f6f2; border-radius: 10px; }
-.tile-1024 { background-color: #edc53f; color: #f9f6f2; border-radius: 10px; }
-.tile-2048 { background-color: #edc22e; color: #f9f6f2; border-radius: 10px; }
-.tile-super { background-color: #3c3a32; color: #f9f6f2; border-radius: 10px; }
+.tile-2 {
+    background-color: #eee4da;
+}
 
-@media screen and (max-width: 600px) {
-    .game-board {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    .tile {
-        width: 60px;
-        height: 60px;
-        font-size: 1.2rem;
-    }
+.tile-4 {
+    background-color: #ede0c8;
+}
+
+.tile-8 {
+    background-color: #f2b179;
+    color: #f9f6f2;
+}
+
+.tile-16 {
+    background-color: #f59563;
+    color: #f9f6f2;
+}
+
+.tile-32 {
+    background-color: #f67c5f;
+    color: #f9f6f2;
+}
+
+.tile-64 {
+    background-color: #f65e3b;
+    color: #f9f6f2;
+}
+
+.tile-128 {
+    background-color: #edcf72;
+    color: #f9f6f2;
+}
+
+.tile-256 {
+    background-color: #edcc61;
+    color: #f9f6f2;
+}
+
+.tile-512 {
+    background-color: #edc850;
+    color: #f9f6f2;
+}
+
+.tile-1024 {
+    background-color: #edc53f;
+    color: #f9f6f2;
+}
+
+.tile-2048 {
+    background-color: #edc22e;
+    color: #f9f6f2;
+}
+
+#score-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: #776e65;
+}
+
+#score-container div {
+    background-color: #bbada0;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#score {
+    font-weight: bold;
+}
+
+#coins {
+    font-weight: bold;
 }
