@@ -78,9 +78,10 @@ function rotateBoard(times) {
 
 function move(direction) {
     let rotated = 0;
-    if (direction === "down") rotated = 2; // 위아래 반전
-    else if (direction === "left") rotated = 1;
-    else if (direction === "right") rotated = 3;
+    if (direction === "up") rotated = 0;
+    else if (direction === "right") rotated = 1;
+    else if (direction === "down") rotated = 2;
+    else if (direction === "left") rotated = 3;
 
     rotateBoard(rotated);
     let moved = false;
@@ -108,7 +109,7 @@ function checkGameOver() {
         }
     }
     setTimeout(() => {
-        if (confirm("게임 오버! 더 남는 칸이 없습니다.")) {
+        if (confirm("게임 오버! 빈 칸이 없습니다.")) {
             initializeBoard();
         }
     }, 200);
@@ -118,10 +119,10 @@ function checkGameOver() {
 function handleInput(event) {
     switch (event.key) {
         case "ArrowUp":
-            move("down"); // 반전
+            move("up");
             break;
         case "ArrowDown":
-            move("up"); // 반전
+            move("down");
             break;
         case "ArrowLeft":
             move("left");
