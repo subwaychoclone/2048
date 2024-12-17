@@ -32,9 +32,8 @@ function updateBoard() {
         for (let c = 0; c < 4; c++) {
             const value = board[r][c];
             const tile = document.createElement("div");
-            tile.className = "tile";
+            tile.className = "tile" + (value > 0 ? ` tile-${value}` : "");
             if (value > 0) {
-                tile.setAttribute("data-value", value);
                 tile.textContent = value;
             }
             gameBoard.appendChild(tile);
@@ -53,7 +52,7 @@ function slide(row) {
             const newValue = nonZero.shift() * 2;
             newRow.push(newValue);
             score += newValue;
-            coins += Math.floor(newValue / 4); // Coins based on tile value
+            coins += Math.floor(newValue / 16); // 코인 보상 낮춤
             nonZero.shift();
         } else {
             newRow.push(nonZero.shift());
@@ -63,23 +62,25 @@ function slide(row) {
     return newRow;
 }
 
-function rotateBoard() {
-    const newBoard = Array.from({ length: 4 }, () => Array(4).fill(0));
-    for (let r = 0; r < 4; r++) {
-        for (let c = 0; c < 4; c++) {
-            newBoard[c][3 - r] = board[r][c];
+function rotateBoard(times) {
+    for (let t = 0; t < times; t++) {
+        const newBoard = Array.from({ length: 4 }, () => Array(4).fill(0));
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+                newBoard[c][3 - r] = board[r][c];
+            }
         }
+        board = newBoard;
     }
-    board = newBoard;
 }
 
 function move(direction) {
     let rotated = 0;
-    if (direction === "up") rotated = 1;
-    else if (direction === "right") rotated = 2;
-    else if (direction === "down") rotated = 3;
+    if (direction === "down") rotated = 2; // 위아래 반전
+    else if (direction === "left") rotated = 1;
+    else if (direction === "right") rotated = 3;
 
-    for (let i = 0; i < rotated; i++) rotateBoard();
+    rotateBoard(rotated);
     let moved = false;
 
     for (let r = 0; r < 4; r++) {
@@ -88,7 +89,7 @@ function move(direction) {
         board[r] = newRow;
     }
 
-    for (let i = 0; i < (4 - rotated) % 4; i++) rotateBoard();
+    rotateBoard((4 - rotated) % 4);
 
     if (moved) {
         addRandomTile();
@@ -111,10 +112,10 @@ function checkGameOver() {
 function handleInput(event) {
     switch (event.key) {
         case "ArrowUp":
-            move("up");
+            move("down"); // 반전
             break;
         case "ArrowDown":
-            move("down");
+            move("up"); // 반전
             break;
         case "ArrowLeft":
             move("left");
