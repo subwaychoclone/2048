@@ -105,17 +105,17 @@ function checkGameOver() {
             if (r < 3 && board[r][c] === board[r + 1][c]) return false;
         }
     }
-    setTimeout(() => alert("Game Over!"), 200);
+    setTimeout(() => alert("게임 오버! 남는 칸이 없습니다"), 200);
     return true;
 }
 
 function handleInput(event) {
     switch (event.key) {
         case "ArrowUp":
-            move("down"); // 반전
+            move("up"); // 반전
             break;
         case "ArrowDown":
-            move("up"); // 반전
+            move("down"); // 반전
             break;
         case "ArrowLeft":
             move("left");
