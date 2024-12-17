@@ -8,6 +8,8 @@ let coins = 0;
 
 function initializeBoard() {
     board = Array.from({ length: 4 }, () => Array(4).fill(0));
+    score = 0;
+    coins = 0;
     addRandomTile();
     addRandomTile();
     updateBoard();
@@ -105,17 +107,21 @@ function checkGameOver() {
             if (r < 3 && board[r][c] === board[r + 1][c]) return false;
         }
     }
-    setTimeout(() => alert("게임 오버! 남는 칸이 없습니다"), 200);
+    setTimeout(() => {
+        if (confirm("게임 오버! 더 남는 칸이 없습니다.")) {
+            initializeBoard();
+        }
+    }, 200);
     return true;
 }
 
 function handleInput(event) {
     switch (event.key) {
         case "ArrowUp":
-            move("up"); // 반전
+            move("down"); // 반전
             break;
         case "ArrowDown":
-            move("down"); // 반전
+            move("up"); // 반전
             break;
         case "ArrowLeft":
             move("left");
